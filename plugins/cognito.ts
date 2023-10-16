@@ -1,12 +1,15 @@
 // plugins/cognito.ts
 
-import { defineNuxtPlugin } from '#app';
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
+import { defineNuxtPlugin } from '#app';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 export default defineNuxtPlugin((nuxtApp) => {
   const poolData = {
-    UserPoolId: 'ap-northeast-1_ct77qUvIJ',
-    ClientId: '7tp8r78u6jca40ut4tk6lgbpp6',
+    UserPoolId: process.env.USER_POOL_ID || '',
+    ClientId: process.env.CLIENT_ID || '',
   };
   const userPool = new CognitoUserPool(poolData);
   nuxtApp.provide('userPool', userPool);

@@ -3,4 +3,9 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   plugins: ['~/plugins/cognito.ts'],
+  vite: {
+    define: {
+      'window.global': {},
+    },
+  },
 });
