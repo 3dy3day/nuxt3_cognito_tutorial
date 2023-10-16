@@ -18,6 +18,8 @@ import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 const nuxtApp = useNuxtApp();
 const userPool = nuxtApp.$userPool;
 
+console.log("Hoge",userPool);
+
 const email = ref('');
 const password = ref('');
 const router = useRouter();
