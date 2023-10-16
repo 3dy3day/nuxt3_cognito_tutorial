@@ -7,3 +7,4 @@
     middleware: ['redirect-login']
   })
 </script>
+
