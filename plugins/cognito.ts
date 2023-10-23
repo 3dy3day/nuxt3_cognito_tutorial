@@ -12,5 +12,5 @@ export default defineNuxtPlugin((nuxtApp) => {
   };
   
   const userPool = new CognitoUserPool(poolData);
-  nuxtApp.provide('userPool', userPool);
+  nuxtApp.provide('userPool', userPool); // provide the userPool to the app
 });

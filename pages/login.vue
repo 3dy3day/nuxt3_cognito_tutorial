@@ -42,7 +42,6 @@ const login = () => {
   const authenticationDetails = new AuthenticationDetails(authenticationData);
 
   cognitoUser.authenticateUser(authenticationDetails, {
-    // 成功時の処理
     onSuccess: function() {
       window.location.href = '/login-success';
     },
@@ -50,7 +49,7 @@ const login = () => {
       showNewPasswordInput.value = true;
       buttonLabel.value = 'Reset Password';
       
-      // 新しいパスワードを設定する処理
+      // On initial login, the user must change their password
       cognitoUser.completeNewPasswordChallenge(newPassword.value, {}, {
         onSuccess: function() {
           window.location.href = '/login-success';
@@ -60,7 +59,6 @@ const login = () => {
         }
       });
     },
-    // 失敗時の処理
     onFailure: function(err) {
       console.log("Error:", err);
     }

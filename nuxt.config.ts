@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   vite: {
     define: {
-      'window.global': {},
+      'window.global': {}, // In SSR, window is not defined. This is a workaround.
     },
   },
   runtimeConfig: {

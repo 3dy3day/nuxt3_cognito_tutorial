@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
   definePageMeta({
-    middleware: ['redirect-login']
+    middleware: ['redirect-login'] // redirecting to login page if not logged in
   })
 </script>
 

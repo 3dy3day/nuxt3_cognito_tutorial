@@ -14,7 +14,7 @@ const userPool = nuxtApp.$userPool;
 const logout = () => {
   const cognitoUser = userPool.getCurrentUser();
   if (cognitoUser != null) {
-    cognitoUser.signOut();
+    cognitoUser.signOut(); // This discard the auth token and will redirect to logout page
   }
   window.location.href = '/';
 };
