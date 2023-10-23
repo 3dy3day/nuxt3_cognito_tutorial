@@ -1,14 +1,15 @@
 <template>
   <div>
     <h1>Login</h1>
+    <p v-if="showNewPasswordInput" style="color: red;">You need to change your password for the first-time login.</p>
     <input v-model="email" placeholder="Email" />
-    <input type="password" v-model="password" placeholder="Password" />
-    <button @click="login">Login</button>
+    <input v-if="!showNewPasswordInput" type="password" v-model="password" placeholder="Password" />
+    <input v-if="showNewPasswordInput" type="password" v-model="newPassword" placeholder="New Password" />
+    <button @click="login">{{ buttonLabel }}</button>
   </div>
-    <nuxt-link to="/signup">Sign Up Here</nuxt-link><br>
-    <nuxt-link to="/reset-password">Forgot Password?</nuxt-link>
+  <nuxt-link to="/signup">Sign Up Here</nuxt-link><br>
+  <nuxt-link to="/reset-password">Forgot Password?</nuxt-link>
 </template>
-
 
 <script setup>
 import { ref } from 'vue';
@@ -20,6 +21,9 @@ const userPool = nuxtApp.$userPool;
 
 const email = ref('');
 const password = ref('');
+const newPassword = ref('');
+const showNewPasswordInput = ref(false);
+const buttonLabel = ref('Login');
 const router = useRouter();
 
 const login = () => {
@@ -30,24 +34,35 @@ const login = () => {
 
   const userData = {
     Username: email.value,
-    Pool: userPool,
+    Pool: userPool
   };
 
   const cognitoUser = new CognitoUser(userData);
   const authenticationDetails = new AuthenticationDetails(authenticationData);
 
   cognitoUser.authenticateUser(authenticationDetails, {
+    // 成功時の処理
     onSuccess: function() {
       window.location.href = '/login-success';
     },
     newPasswordRequired: function(userAttributes, requiredAttributes) {
-      router.push({ name: 'reset-password', query: { email: email.value } });
+      showNewPasswordInput.value = true;
+      buttonLabel.value = 'Reset Password';
+      
+      // 新しいパスワードを設定する処理
+      cognitoUser.completeNewPasswordChallenge(newPassword.value, {}, {
+        onSuccess: function() {
+          window.location.href = '/login-success';
+        },
+        onFailure: function(err) {
+          console.log("Error:", err);
+        }
+      });
     },
+    // 失敗時の処理
     onFailure: function(err) {
       console.log("Error:", err);
-      alert(err.message || JSON.stringify(err));
     }
   });
 };
-
 </script>

@@ -13,8 +13,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     ClientId: runtimeConfig.public.clientId as string,
   };
   
-  console.log("Fuga",poolData);
-
   const userPool = new CognitoUserPool(poolData);
   nuxtApp.provide('userPool', userPool);
 });
