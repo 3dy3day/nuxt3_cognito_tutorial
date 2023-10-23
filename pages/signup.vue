@@ -1,3 +1,4 @@
+<!-- signup.vue -->
 <template>
     <div>
       <h1>Sign Up</h1>

@@ -4,8 +4,6 @@ import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import { defineNuxtPlugin } from '#app';
 
 export default defineNuxtPlugin((nuxtApp) => {
-  const {$config} = nuxtApp;
-  
   const runtimeConfig = useRuntimeConfig();
 
   const poolData = {
