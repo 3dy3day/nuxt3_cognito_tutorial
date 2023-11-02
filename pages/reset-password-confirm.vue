@@ -13,7 +13,7 @@
   import { ref, onMounted } from 'vue';
   import { useRouter, useRoute } from 'vue-router';
   import { CognitoUser } from 'amazon-cognito-identity-js';
-  
+
   const nuxtApp = useNuxtApp();
   const userPool = nuxtApp.$userPool;
   

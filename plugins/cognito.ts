@@ -10,7 +10,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     UserPoolId: runtimeConfig.public.userPoolId as string,
     ClientId: runtimeConfig.public.clientId as string,
   };
-  
+
   const userPool = new CognitoUserPool(poolData);
-  nuxtApp.provide('userPool', userPool); // provide the userPool to the app
+  nuxtApp.provide('userPool', userPool);
 });

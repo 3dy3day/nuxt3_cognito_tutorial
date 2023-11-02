@@ -11,7 +11,7 @@
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
   import { CognitoUser } from 'amazon-cognito-identity-js';
-  
+
   const nuxtApp = useNuxtApp();
   const userPool = nuxtApp.$userPool;
   

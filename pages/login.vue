@@ -14,52 +14,68 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
-
-const nuxtApp = useNuxtApp();
-const userPool = nuxtApp.$userPool;
 
 const email = ref('');
 const password = ref('');
 const newPassword = ref('');
 const showNewPasswordInput = ref(false);
 const buttonLabel = ref('Login');
-const router = useRouter();
+
+const nuxtApp = useNuxtApp();
+const userPool = nuxtApp.$userPool;
+const cognitoUser = userPool.getCurrentUser();
+
+if (cognitoUser) {
+  cognitoUser.getSession(function (err, session) {
+    if (err) {
+      console.error("Error retrieving session:", err);
+      return;
+    }
+
+    if (session && session.isValid()) { // Check if user already has a valid session
+      console.log("User is logged in.");
+      return navigateTo('/login-success');
+    } else {
+      console.log("Session is not valid or expired.");
+      return;
+    }
+  });
+} else {
+  console.log("User is not logged in.");
+}
 
 const login = () => {
   const authenticationData = {
     Username: email.value,
     Password: password.value
   };
-
   const userData = {
     Username: email.value,
     Pool: userPool
   };
-
   const cognitoUser = new CognitoUser(userData);
   const authenticationDetails = new AuthenticationDetails(authenticationData);
 
   cognitoUser.authenticateUser(authenticationDetails, {
-    onSuccess: function() {
+    onSuccess: function () {
       window.location.href = '/login-success';
     },
-    newPasswordRequired: function(userAttributes, requiredAttributes) {
+    newPasswordRequired: function (userAttributes, requiredAttributes) {
       showNewPasswordInput.value = true;
       buttonLabel.value = 'Reset Password';
-      
+
       // On initial login, the user must change their password
       cognitoUser.completeNewPasswordChallenge(newPassword.value, {}, {
-        onSuccess: function() {
+        onSuccess: function () {
           window.location.href = '/login-success';
         },
-        onFailure: function(err) {
+        onFailure: function (err) {
           console.log("Error:", err);
         }
       });
     },
-    onFailure: function(err) {
+    onFailure: function (err) {
       console.log("Error:", err);
     }
   });
